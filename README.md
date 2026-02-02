@@ -83,3 +83,25 @@ alembic current
 
 - [] Add loggin and telemetry
 - [] Add Dockerfile handles network, postgresql, fastapi and rabbitmq
+
+
+## Per Requirement before project starts:
+Learning Plan & Next Steps
+
+Timeline: 1–2 Weeks Focus: Backend proficiency with Python 3.13 & FastAPI
+### Phase 1: Core Fundamentals (The "Stack")
+- Language: Get comfortable with Python 3.13, focusing on modern typing and async features.
+- Framework: Go through FastAPI, specifically understanding the Pydantic model system for data validation and schema definition.
+- Database: Implement SQLAlchemy (ORM) and PostgreSQL.
+- Migrations: Use Alembic for database migrations and schema management.
+### Phase 2: Infrastructure & DevOps
+- Containerization: Set up Docker Compose to orchestrate the application and database containers.
+- Security: Learn secret management using GCP (Google Cloud Platform) to handle credentials securely.
+- Observability: Implement basic Logging and Telemetry to understand application health.
+
+### Phase 3: The Practical Deliverable
+Build a simple but complete CRUD application that demonstrates understanding of the full lifecycle:
+- HTTP Verbs: Implement all four standard methods: GET, POST, PUT/PATCH, and DELETE.
+- Routing: Demonstrate how the routing system works in FastAPI (e.g., APIRouter).
+- Environments: Set up configuration management for different environments (Dev vs. Prod).
+- Migrations: Successfully migrate the database schema using Alembic.
