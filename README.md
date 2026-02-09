@@ -14,6 +14,9 @@ python3.13 -m venv .venv
 
 # Activate virtual environment
 source .venv/bin/activate
+
+# Update start.sh permission
+chmod +x start.sh
 ```
 
 ## 📦 Install Dependencies
@@ -26,7 +29,7 @@ pip install -r requirements.txt
 ## 🚀 Run the App
 
 ```sh
-uvicorn main:app --reload
+./start.sh
 ```
 
 - The API will be available at: [Cotext: http://127.0.0.1:8000]

@@ -19,7 +19,7 @@ target_metadata = Base.metadata
 
 
 def get_url() -> str:
-    url = settings.DATABASE_URL
+    url = settings.DATABASE_URL_SYNC
     if not url:
         raise RuntimeError("DATABASE_URL environment variable not set!")
     return url
