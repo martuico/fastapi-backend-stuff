@@ -85,7 +85,7 @@ alembic current
 ### TODO
 
 - [x] Add loggin and telemetry
-- [ ] Add JWT
+- [x] Add JWT
 - [ ] Add Dockerfile handles network, postgresql, fastapi and rabbitmq
 
 ## Per Requirement before project starts
