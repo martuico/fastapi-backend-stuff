@@ -1,18 +1,20 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Response, WebSocket, WebSocketDisconnect, status
 from opentelemetry import trace
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.session import get_db
+from lib.broadcast.ticket import broadcast_ticket_list
+from lib.connection import ConnectionManager
 from lib.helpers import generate_ticket_number
 from models.ticket import Ticket
 from models.ticket import TicketStatus as TicketStatusModel
 from schemas.ticketSchema import TicketCreate, TicketRead, TicketStatus
 
 router = APIRouter()
-
+manager = ConnectionManager()
 
 tracer = trace.get_tracer(__name__)
 
@@ -27,12 +29,19 @@ async def create_ticket(payload: TicketCreate, response: Response, db: AsyncSess
             ticket_number="",
             status=TicketStatus.waiting,
         )
+
+        db.add(ticket)
+
+        await db.flush()
+
         ticket.ticket_number = generate_ticket_number(ticket.id)
 
         span.set_attribute("queued.ticket_number", ticket.ticket_number)
         db.add(ticket)
         await db.commit()
         await db.refresh(ticket)
+
+        await broadcast_ticket_list(db)
 
         response.status_code = status.HTTP_201_CREATED
         return ticket
@@ -54,6 +63,22 @@ async def list_tickets(
         return list(tickets)
 
 
+@router.websocket("/ws")
+async def tickets_websocket(websocket: WebSocket) -> None:
+    await manager.connect(websocket)
+
+    with tracer.start_as_current_span("websocket_connection"):
+        try:
+            while True:
+                message = await websocket.receive_text()
+
+                with tracer.start_as_current_span("websocket_message") as span:
+                    span.set_attribute("ws.message", message)
+
+        except WebSocketDisconnect:
+            manager.disconnect(websocket)
+
+
 @router.patch("/{ticket_id}", response_model=TicketRead)
 async def update_ticket_status(
     ticket_id: int, new_status: TicketStatus, response: Response, db: AsyncSession = Depends(get_db)
@@ -71,6 +96,7 @@ async def update_ticket_status(
         db.add(ticket)
         await db.commit()
         await db.refresh(ticket)
+        await broadcast_ticket_list(db)
 
         response.status_code = status.HTTP_200_OK
         return ticket

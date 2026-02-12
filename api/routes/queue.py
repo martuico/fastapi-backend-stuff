@@ -42,3 +42,7 @@ async def list_queues(
         result = await db.execute(select(Queue))
         response.status_code = status.HTTP_200_OK
         return list(result.scalars())
+
+
+# Get all realtime tickets from queue
+# Booth A1 -> ticket 123: served

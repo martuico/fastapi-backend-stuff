@@ -86,6 +86,7 @@ alembic current
 
 - [x] Add loggin and telemetry
 - [x] Add JWT
+- [x] Add Pub/Sub (No redis just memory)
 - [ ] Add Dockerfile handles network, postgresql, fastapi and rabbitmq
 
 ## Per Requirement before project starts

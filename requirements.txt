@@ -21,6 +21,7 @@ googleapis-common-protos==1.72.0
 greenlet==3.3.1
 grpcio==1.76.0
 h11==0.16.0
+httptools==0.7.1
 identify==2.6.16
 idna==3.11
 importlib_metadata==8.7.1
@@ -65,6 +66,9 @@ typing-inspection==0.4.2
 typing_extensions==4.15.0
 urllib3==2.6.3
 uvicorn==0.40.0
+uvloop==0.22.1
 virtualenv==20.36.1
+watchfiles==1.1.1
+websockets==16.0
 wrapt==1.17.3
 zipp==3.23.0
