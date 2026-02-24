@@ -14,7 +14,12 @@ class Settings(BaseSettings):  # type: ignore[misc]
     SECRET_KEY: str
     ALGORITHM: Annotated[str, Field(default="HS256")]
     ACCESS_TOKEN_EXPIRE_MINUTES: Annotated[int, Field(default=30)]
+    PROJECT_ID: Annotated[str, Field(default="queue-project")]
+    TOPIC_ID: Annotated[str, Field(default="demo-topic")]
+    SUBSCRIPTION_ID: Annotated[str, Field(default="demo-subs")]
+    PUBSUB_EMULATOR_HOST: str
 
     model_config = SettingsConfigDict(
         env_file=(".env"),
+        extra="ignore",
     )

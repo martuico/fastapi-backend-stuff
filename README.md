@@ -82,6 +82,40 @@ alembic current
 - Make sure the PostgreSQL database is running locally before applying migrations.
 - Alembic is configured to read the database URL from .env.
 
+Running Pub/Sub
+
+```bash
+docker-compose up --build
+```
+
+In another terminal:
+ssh to pubsubcontainer by
+
+```bash
+docker exec -it <pubsub_container> bash
+```
+
+```bash
+gcloud beta emulators pubsub env-init
+export PUBSUB_EMULATOR_HOST=localhost:8085
+
+gcloud pubsub topics create demo-topic
+gcloud pubsub subscriptions create demo-subs \
+  --topic=demo-topic
+```
+
+test it by running curl.
+
+```bash
+curl -X POST "http://localhost:8000/publish?msg=hello"
+```
+
+should see this
+
+```bash
+Received message: hello
+```
+
 ### TODO
 
 - [x] Add loggin and telemetry
